@@ -1,0 +1,60 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2' // Highly recommended for current LangChain4j stability
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.trustAnchor'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// 1. Spring Boot Starters
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// 2. LangChain4j BOM (Manages versions for all modules)
+	implementation platform("dev.langchain4j:langchain4j-bom:0.35.0")
+
+	// 3. AI Modules
+	implementation "dev.langchain4j:langchain4j-spring-boot-starter"
+	implementation "dev.langchain4j:langchain4j-ollama-spring-boot-starter"
+	implementation "dev.langchain4j:langchain4j-pgvector"
+
+	// 4. Free Local Embeddings (BGE-Small runs inside your JVM)
+	implementation "dev.langchain4j:langchain4j-embeddings-bge-small-en-q"
+	implementation "dev.langchain4j:langchain4j-document-parser-apache-pdfbox"
+
+	// 5. Utilities & Dev Tools
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+	implementation 'org.apache.commons:commons-pool2' // For Redis pooling
+
+	// 6. Database Drivers
+	runtimeOnly 'org.postgresql:postgresql'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
