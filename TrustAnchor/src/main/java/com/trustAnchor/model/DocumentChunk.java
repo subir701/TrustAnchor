@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.UUID;
 
@@ -21,6 +23,7 @@ public class DocumentChunk {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DocumentMetadata document;
 
     @Column(columnDefinition = "TEXT", nullable = false)
