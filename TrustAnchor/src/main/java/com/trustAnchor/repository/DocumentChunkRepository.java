@@ -23,11 +23,11 @@ public interface DocumentChunkRepository extends JpaRepository<DocumentChunk, UU
     @Query(value = """
         SELECT * 
         FROM document_chunks
-        ORDER BY embedding <=> :queryEmbedding
+        ORDER BY embedding <=> CAST(:queryEmbedding AS vector)
         LIMIT :limit
         """,
             nativeQuery = true)
-    List<DocumentChunk> findSimilarChunks(
+    List<String> findSimilarChunks(
             @Param("queryEmbedding") float[] queryEmbedding,
             @Param("limit") int limit
     );
@@ -50,5 +50,15 @@ public interface DocumentChunkRepository extends JpaRepository<DocumentChunk, UU
         LIMIT :limit""", nativeQuery = true)
     List<DocumentChunk> findSimilarChunksInDocument(float[] queryEmbedding, UUID documentId, int limit);
 
+    @Query(value = """
+        SELECT c.content 
+        FROM document_chunks c
+        ORDER BY c.embedding <=> CAST(:queryEmbedding AS vector)
+        LIMIT :limit
+        """, nativeQuery = true)
+    List<String> findSimilarContent(
+            @Param("queryEmbedding") float[] queryEmbedding,
+            @Param("limit") int limit
+    );
 
 }

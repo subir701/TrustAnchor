@@ -34,8 +34,10 @@ public class DocumentMetadata {
     private Integer totalPages;
 
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private IngestionStatus status = IngestionStatus.PENDING;
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @PrePersist

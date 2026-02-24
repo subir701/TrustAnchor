@@ -20,4 +20,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorDetails("PROCESSING_ERROR", exception.getMessage()));
     }
+
+    @ExceptionHandler(ResponseFailedException.class)
+    public ResponseEntity<ErrorDetails> handleResponse(ResponseFailedException exception){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorDetails("FAILED_TO_GENERATE_RESPONSE_ERROR", exception.getMessage()));
+    }
 }

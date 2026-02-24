@@ -40,10 +40,13 @@ public class IngestionServiceImpl implements IngestionService{
         }
 
         // Checking Qutoa
-        long currentUsage = documentMetadataRepository.getTotalStorageUsed();
+        Long currentUsage = documentMetadataRepository.getTotalStorageUsed();
+
+        // If currentUsage is null (DB is empty), use 0
+        long currentUsageResult = (currentUsage != null) ? currentUsage: 0L;
         long newFileSize = file.getSize();
 
-        if(currentUsage + newFileSize > MAX_QUOTA_BYTES){
+        if(currentUsageResult + newFileSize > MAX_QUOTA_BYTES){
             throw new StorageQuotaExceededException("Storage quota exceeded. Max allowed is 2GB.");
         }
 
