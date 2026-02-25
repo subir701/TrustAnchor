@@ -59,24 +59,22 @@ TrustAnchor follows a "Waterfall" retrieval strategy to maximize speed and minim
 
 ### 🚦 Quick Start
 
-1.  Bashgit clone https://github.com/yourusername/TrustAnchor.gitcd TrustAnchor
+1.  git clone https://github.com/yourusername/TrustAnchor.gitcd TrustAnchor
     
-2.  Bashdocker-compose up -d_Note: This starts Postgres with pgvector and redis-stack-server._
+2.  docker-compose up -d_Note: This starts Postgres with pgvector and redis-stack-server._
     
-3.  Bash./gradlew bootRun
+3.  ./gradlew bootRun
     
-4.  Bashcurl -X POST -F "file=@your\_resume.pdf" http://localhost:8080/trustanchor/upload
+4.  curl -X POST -F "file=@your\_resume.pdf" http://localhost:8080/trustanchor/upload
     
-5.  Bashcurl -i -X POST http://localhost:8080/trustanchor/querys/ask \\-H "Content-Type: application/json" \\-d '{"message": "What are the candidate's core technical skills?"}'
+5.  curl -i -X POST http://localhost:8080/trustanchor/querys/ask \\-H "Content-Type: application/json" \\-d '{"message": "What are the candidate's core technical skills?"}'
     
 
 ### 🧪 Running Tests
 
 TrustAnchor uses Mockito to simulate AI responses, ensuring the caching logic can be verified without requiring a GPU or active LLM:
 
-Bash
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   ./gradlew test   `
+`   ./gradlew test   `
 
 ### 📈 Roadmap (v2.0)
 
