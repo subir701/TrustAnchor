@@ -8,6 +8,7 @@ import dev.langchain4j.store.embedding.EmbeddingMatch;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class RedisCacheServiceImpl implements RedisCacheService{
 
@@ -27,14 +27,22 @@ public class RedisCacheServiceImpl implements RedisCacheService{
     private final EmbeddingStore<TextSegment> redisEmbeddingStore; // Injected Bean
     private final EmbeddingModel embeddingModel;
 
+    public RedisCacheServiceImpl(RedisTemplate<String, String> redisTemplate, @Qualifier("customRedisEmbeddingStore") EmbeddingStore<TextSegment> redisEmbeddingStore, EmbeddingModel embeddingModel) {
+        this.redisTemplate = redisTemplate;
+        this.redisEmbeddingStore = redisEmbeddingStore;
+        this.embeddingModel = embeddingModel;
+    }
+
     @Override
     public String checkL1Cache(String query) {
         String key = generateKey(query);
         String cachedResponse = redisTemplate.opsForValue().get(key);
 
-        if(cachedResponse != null){
+        // FIX: Only log if it's actually there!
+        if (cachedResponse != null) {
             log.info("L1 Cache Hit for query hash: {}", key);
         }
+
         return cachedResponse;
     }
 
@@ -52,7 +60,7 @@ public class RedisCacheServiceImpl implements RedisCacheService{
         Embedding queryEmbedding = embeddingModel.embed(query).content();
 
         // 2. Search Redis with a similarity threshold (0.95 = 95%)
-        List<EmbeddingMatch<TextSegment>> matches = redisEmbeddingStore.findRelevant(queryEmbedding, 1, 0.95);
+        List<EmbeddingMatch<TextSegment>> matches = redisEmbeddingStore.findRelevant(queryEmbedding, 1, 0.90);
 
         if (!matches.isEmpty()) {
             return matches.get(0).embedded().text();
@@ -78,5 +86,19 @@ public class RedisCacheServiceImpl implements RedisCacheService{
             log.error("SHA-256 algorithm not found", e);
             throw new RuntimeException("Internal Security Error");
         }
+    }
+
+    @Override
+    public void saveToL2Cache(String query, String response) {
+        // 1. Vecotrize the original query (this is the key for the semantic search)
+        Embedding queryEmbedding = embeddingModel.embed(query).content();
+
+        // 2. Wrap the AI's answer into a TextSegment
+        TextSegment responeSegment = TextSegment.from(response);
+
+        // 3. Store the vector and the text together in Redis
+        redisEmbeddingStore.add(queryEmbedding, responeSegment);
+
+        log.debug("Successfully saved query vector and response to L2 cache.");
     }
 }

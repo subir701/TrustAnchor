@@ -39,7 +39,7 @@ public class DocumentProcessServiceImpl implements DocumentProcessService{
 
 
                 // Creating a Splitter (500 chars with 50 char overlap)
-                DocumentSplitter splitter = DocumentSplitters.recursive(500, 50);
+                DocumentSplitter splitter = DocumentSplitters.recursive(500, 100);
 
                 // Splitiing the document into TextSegments
                 List<TextSegment> segmentList = splitter.split(document);

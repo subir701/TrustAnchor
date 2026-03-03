@@ -27,7 +27,7 @@ public class AiConfig {
                 .baseUrl("http://localhost:11434")
                 .modelName("llama3.2")
                 .timeout(Duration.ofMinutes(5)) // Increase this significantly
-                .temperature(0.0)
+                .temperature(0.4)
                 .numCtx(2048)
                 .build();
     }
