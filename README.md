@@ -42,7 +42,7 @@ On machines with limited RAM or CPU resources, this leads to **slow response tim
 The result is a **fast, private, and hardware-efficient RAG system**.
 
 ---
-![http://url/to/img.png](https://github.com/subir701/TrustAnchor/TrustAnchor.PNG)
+![http://url/to/img.png](https://github.com/subir701/TrustAnchor/blob/main/TrustAnchor.PNG)
 ---
 
 # 🚀 Key Features
