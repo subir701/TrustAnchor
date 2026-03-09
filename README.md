@@ -288,13 +288,13 @@ It was generated and iteratively developed using **Lovable AI**, which allowed r
 Frontend repository:
 
 ```
-[<frontend-repo-url>](https://github.com/subir701/trust-anchor-chat.git)
+https://github.com/subir701/trust-anchor-chat.git
 ```
 
 To run the frontend:
 
 ```bash
-git clone [<frontend-repo-url>](https://github.com/subir701/trust-anchor-chat.git)
+git clone https://github.com/subir701/trust-anchor-chat.git
 cd frontend
 npm install
 npm run dev
