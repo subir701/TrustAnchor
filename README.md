@@ -11,7 +11,7 @@ What makes TrustAnchor unique is its **Tiered Caching Architecture**, designed t
 # 📚 Table of Contents
 
 - [Introduction](#introduction)
-- [Key Features](#key-features)
+- [Key Features](#🚀 Key Features)
 - [Architecture](#architecture)
 - [Tech Stack](#tech-stack)
 - [Prerequisites](#prerequisites)
@@ -41,6 +41,8 @@ On machines with limited RAM or CPU resources, this leads to **slow response tim
 
 The result is a **fast, private, and hardware-efficient RAG system**.
 
+---
+![TrustAnchor Architecture](TrustAnchor.png)
 ---
 
 # 🚀 Key Features
